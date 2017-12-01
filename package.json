@@ -1,6 +1,6 @@
 {
   "name": "coffeecat-applet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Base applet class for CoffeeCat server",
   "main": "index.js",
   "scripts": {
