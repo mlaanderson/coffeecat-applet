@@ -1,0 +1,27 @@
+{
+  "name": "coffeecat-applet",
+  "version": "1.0.0",
+  "description": "Base applet class for CoffeeCat server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mlaanderson/coffeecat-applet.git"
+  },
+  "keywords": [
+    "CoffeeCat",
+    "Applet"
+  ],
+  "author": "Michael Anderson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mlaanderson/coffeecat-applet/issues"
+  },
+  "homepage": "https://github.com/mlaanderson/coffeecat-applet#readme",
+  "dependencies": {
+    "coffeecat-ws": "git+https://github.com/mlaanderson/coffeecat-ws.git",
+    "express": "^4.16.2"
+  }
+}
