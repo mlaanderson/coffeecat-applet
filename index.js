@@ -23,7 +23,7 @@ class Applet {
             wss: webSocketServer
         });
 
-        this.app = express;
+        this.app = express();
 
         this.app.use((req, res, next) => {
             // attach a referenct to the applet to each request
