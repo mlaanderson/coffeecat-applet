@@ -5,8 +5,8 @@ var m_private = new WeakMap();
 
 /**
  * @typedef {{container: string, path: string}} Container
- * @typedef {{port: number, listen: string|boolean, websockets?: boolean, ssl?: boolean}} AppletProtocol
- * @typedef {{applet: Container, errorTemplate: string, http?: AppletProtocol, https?: AppletProtocol}} AppletConfig
+ * @typedef {{name: string, port: number, listen: string|boolean, websockets?: boolean, ssl?: boolean}} AppletProtocol
+ * @typedef {{applet: Container, errorTemplate: string, protocols: AppletProtocol[]}} AppletConfig
  * @typedef {{dotfiles?: string, etag?: boolean, extensions?: string[], fallthrough?: boolean, immutable?: boolean, index?: boolean | string | string[], lastModified?: boolean, maxAge?: number | string, redirect?: boolean, setHeaders?: (res: Response, path: string, stat: any) => any}} ServeStaticOptions
  */
 
@@ -20,9 +20,10 @@ class Applet {
     constructor(config, webSocketServer) {
         m_private.set(this, {
             configuration: config,
-            wss: webSocketServer,
-            app: express()
+            wss: webSocketServer
         });
+
+        this.app = express;
 
         this.app.use((req, res, next) => {
             // attach a referenct to the applet to each request
@@ -31,9 +32,9 @@ class Applet {
     }
 
     /** @type {Express} */
-    get app() {
-        return m_private.get(this).app;
-    }
+    // get app() {
+    //     return m_private.get(this).app;
+    // }
 
     /** @type {AppletConfig} */
     get configuration() {
