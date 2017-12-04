@@ -20,21 +20,15 @@ class Applet {
     constructor(config, webSocketServer) {
         m_private.set(this, {
             configuration: config,
-            wss: webSocketServer
-        });
-
-        this.app = express();
-
-        this.app.use((req, res, next) => {
-            // attach a referenct to the applet to each request
-            req.applet = this;
+            wss: webSocketServer,
+            app: express()
         });
     }
 
     /** @type {Express} */
-    // get app() {
-    //     return m_private.get(this).app;
-    // }
+    get app() {
+        return m_private.get(this).app;
+    }
 
     /** @type {AppletConfig} */
     get configuration() {
