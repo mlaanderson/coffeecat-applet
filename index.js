@@ -35,6 +35,11 @@ class Applet {
         return m_private.get(this).configuration;
     }
 
+    /** @type {WebSocketServer} */
+    get wss() {
+        return m_private.get(this).webSocketServer;
+    }
+
     /**
      * 
      * @param {string} engine the view engine to use for templates
