@@ -1,8 +1,6 @@
 var express = require('express');
 var WebSocketServer = require('coffeecat-ws');
 
-var m_private = new WeakMap();
-
 /**
  * @typedef {{container: string, path: string}} Container
  * @typedef {{name: string, port: number, listen: string|boolean, websockets?: boolean, ssl?: boolean}} AppletProtocol
@@ -18,26 +16,24 @@ class Applet {
      * @param {WebSocketServer} webSocketServer 
      */
     constructor(config, webSocketServer) {
-        m_private.set(this, {
-            configuration: config,
-            wss: webSocketServer,
-            app: express()
-        });
+        this.__config = config;
+        this.__wss = webSocketServer;
+        this.__app = express();
     }
 
     /** @type {Express} */
     get app() {
-        return m_private.get(this).app;
+        return this.__app;
     }
 
     /** @type {AppletConfig} */
     get configuration() {
-        return m_private.get(this).configuration;
+        return this.__configuration;
     }
 
     /** @type {WebSocketServer} */
     get wss() {
-        return m_private.get(this).webSocketServer;
+        return this.__webSocketServer;
     }
 
     /**
