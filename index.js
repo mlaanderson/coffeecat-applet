@@ -28,12 +28,12 @@ class Applet {
 
     /** @type {AppletConfig} */
     get configuration() {
-        return this.__configuration;
+        return this.__config;
     }
 
     /** @type {WebSocketServer} */
     get wss() {
-        return this.__webSocketServer;
+        return this.__wss;
     }
 
     /**
