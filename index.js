@@ -1,5 +1,5 @@
+const EventEmitter = require('events');
 var express = require('express');
-var WebSocketServer = require('coffeecat-ws');
 
 /**
  * @typedef {{container: string, path: string}} Container
@@ -9,16 +9,16 @@ var WebSocketServer = require('coffeecat-ws');
  */
 
 
-class Applet {
+class Applet extends EventEmitter {
     /**
      * Creates a new applet
      * @param {AppletConfig} config 
-     * @param {WebSocketServer} webSocketServer 
      */
-    constructor(config, webSocketServer) {
+    constructor(config) {
+        super();
         this.__config = config;
-        this.__wss = webSocketServer;
         this.__app = express();
+        this.__session = false;
     }
 
     /** @type {Express} */
@@ -31,9 +31,18 @@ class Applet {
         return this.__config;
     }
 
-    /** @type {WebSocketServer} */
-    get wss() {
-        return this.__wss;
+    upgrade(req, socket, head) {
+        if (this.__session) {
+            this.__session(req, {
+                write: function() {},
+                end: function() {},
+                getHeader: function() { return null; },
+                setHeader: function() {}
+            }, () => {
+                console.log('Finished setting session on upgrade request');
+            });
+        }
+        this.emit('upgrade', req, socket, head);
     }
 
     /**
@@ -68,7 +77,8 @@ class Applet {
      */
     setSession(engine, ...args) {
         let sessionEngine = require(engine);
-        this.app.use(sessionEngine.apply(sessionEngine, args));
+        this.__session = sessionEngine.apply(sessionEngine, args)
+        this.app.use(this.__session);
     }
 }
 
