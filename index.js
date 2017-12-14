@@ -31,18 +31,31 @@ class Applet extends EventEmitter {
         return this.__config;
     }
 
+    /**
+     * Allows the applet to intercept an upgrade and add a session 
+     * to the request.
+     * @param {net.Request} req 
+     * @param {net.Socket} socket 
+     * @param {Buffer} head 
+     */
     upgrade(req, socket, head) {
         if (this.__session) {
-            this.__session(req, {
+            this.__session(req, 
+            // this is a fake http.Response object with just
+            // enough functionality for a session to be created
+            {
                 write: function() {},
                 end: function() {},
                 getHeader: function() { return null; },
                 setHeader: function() {}
             }, () => {
-                console.log('Finished setting session on upgrade request');
+                // only emit the upgrade after the session has
+                // been added to the request
+                this.emit('upgrade', req, socket, head);
             });
+        } else {
+            this.emit('upgrade', req, socket, head);
         }
-        this.emit('upgrade', req, socket, head);
     }
 
     /**
